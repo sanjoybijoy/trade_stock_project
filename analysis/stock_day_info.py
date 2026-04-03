@@ -58,46 +58,33 @@ def parse_date(value):
 
 
 
-# Assuming these functions return lists of tickers
-y_most_active_tickers = y_most_active()  # Example: ['AAPL', 'MSFT', 'TSLA']
-y_trending_tickers = y_tranding()       # Example: ['GOOG', 'AAPL', 'AMZN']
-y_top_gainers_tickers = y_top_gainers() # Example: ['TSLA', 'NVDA', 'META']
-y_top_losers_tickers = y_top_losers()   # Example: ['AMZN', 'NFLX', 'TSLA']
-#watchlist_regsho_symbols, watchlist_symbols_list = merge_watchlist_regsho_symbols()
-top_short_volume_symbols = top_sv_symbol_lists()
-reg_sho_remove_symbols = reg_sho_remove_list() 
-current_regsho_symbols = get_current_regsho_symbols()
-# Merging all ticker lists and ensuring uniqueness using set()
+def get_unique_all_ytop_regsho_splits_tickers():
+    # Assuming these functions return lists of tickers
+    y_most_active_tickers = y_most_active()  # Example: ['AAPL', 'MSFT', 'TSLA']
+    y_trending_tickers = y_tranding()       # Example: ['GOOG', 'AAPL', 'AMZN']
+    y_top_gainers_tickers = y_top_gainers() # Example: ['TSLA', 'NVDA', 'META']
+    y_top_losers_tickers = y_top_losers()   # Example: ['AMZN', 'NFLX', 'TSLA']
+    #watchlist_regsho_symbols, watchlist_symbols_list = merge_watchlist_regsho_symbols()
+    top_short_volume_symbols = top_sv_symbol_lists()
+    reg_sho_remove_symbols = reg_sho_remove_list() 
+    current_regsho_symbols = get_current_regsho_symbols()
+    # Merging all ticker lists and ensuring uniqueness using set()
 
-# Fetch all unique stock split symbols from the database
-stock_splits_symbols_QuerySet = TickerSplit.objects.values_list('symbol', flat=True).distinct()
-stock_splits_symbols = list(stock_splits_symbols_QuerySet)
+    # Fetch all unique stock split symbols from the database
+    stock_splits_symbols_QuerySet = TickerSplit.objects.values_list('symbol', flat=True).distinct()
+    stock_splits_symbols = list(stock_splits_symbols_QuerySet)
 
-unique_all_ytop_regsho_splits_tickers = set(
-    y_most_active_tickers + 
-    y_trending_tickers + 
-    y_top_gainers_tickers + 
-    y_top_losers_tickers +
-    top_short_volume_symbols +
-    current_regsho_symbols +
-    reg_sho_remove_symbols+
-    stock_splits_symbols
-)
-
-# The `unique_tickers` set now contains all unique tickers
-# Printing all the lists and sets
-#print(f"y_most_active_tickers: {y_most_active_tickers}")
-#print(f"y_trending_tickers: {y_trending_tickers}")
-#print(f"y_top_gainers_tickers: {y_top_gainers_tickers}")
-#print(f"y_top_losers_tickers: {y_top_losers_tickers}")
-# Uncomment and adjust the next line when `merge_watchlist_regsho_symbols` is defined
-# print(f"watchlist_regsho_symbols: {watchlist_regsho_symbols}")
-# print(f"watchlist_symbols_list: {watchlist_symbols_list}")
-#print(f"top_short_volume_symbols: {top_short_volume_symbols}")
-#print(f"reg_sho_remove_symbols: {reg_sho_remove_symbols}")
-#print(f"current_regsho_symbols: {current_regsho_symbols}")
-#print(f"unique_all_ytop_regsho_tickers: {unique_all_ytop_regsho_tickers}")
-
+    unique_all_ytop_regsho_splits_tickers = set(
+        y_most_active_tickers + 
+        y_trending_tickers + 
+        y_top_gainers_tickers + 
+        y_top_losers_tickers +
+        top_short_volume_symbols +
+        current_regsho_symbols +
+        reg_sho_remove_symbols+
+        stock_splits_symbols
+    )
+    return unique_all_ytop_regsho_splits_tickers
 
 def update_day_stock_info(request):
     #symbols_to_update = ["AAPL", "MSFT", "GOOGL","HOLO","NVDA","UBXG"]  # Replace with the relevant symbols
@@ -111,6 +98,8 @@ def update_day_stock_info(request):
     ))
     # Convert watchlist_symbols to a set before combining
     unique_watchlist_symbols = set(watchlist_symbols)
+    
+    unique_all_ytop_regsho_splits_tickers = get_unique_all_ytop_regsho_splits_tickers()
     # | Operator: Combines two sets into a new set that contains all unique elements from both.
     unique_all_ytop_watchlist_regsho_tickers = unique_all_ytop_regsho_splits_tickers | unique_watchlist_symbols
 
@@ -332,6 +321,7 @@ def stock_day_info_top_losers_view(request):
 def stock_day_info_top_SV_view(request):
 
     # Fetch user watchlists
+    top_short_volume_symbols = top_sv_symbol_lists()
 
     formatted_day_stocks = stock_day_info(top_short_volume_symbols)
 

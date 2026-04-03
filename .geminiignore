@@ -2,8 +2,8 @@
 stock_venv_01/
 
 # Exclude large data and temporary files
-api/
-SyncApp/
+# api/
+# SyncApp/
 data/
 **/migrations/
 

@@ -34,64 +34,80 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 # Assuming these functions return lists of tickers
-y_most_active_tickers = y_most_active()  # Example: ['AAPL', 'MSFT', 'TSLA']
-y_trending_tickers = y_tranding()       # Example: ['GOOG', 'AAPL', 'AMZN']
-y_top_gainers_tickers = y_top_gainers() # Example: ['TSLA', 'NVDA', 'META']
-y_top_losers_tickers = y_top_losers()   # Example: ['AMZN', 'NFLX', 'TSLA']
+def get_y_tickers():
+    y_most_active_tickers = y_most_active()  # Example: ['AAPL', 'MSFT', 'TSLA']
+    y_trending_tickers = y_tranding()       # Example: ['GOOG', 'AAPL', 'AMZN']
+    y_top_gainers_tickers = y_top_gainers() # Example: ['TSLA', 'NVDA', 'META']
+    y_top_losers_tickers = y_top_losers()   # Example: ['AMZN', 'NFLX', 'TSLA']
+    return y_most_active_tickers, y_trending_tickers, y_top_gainers_tickers, y_top_losers_tickers
 
-y_unique_most_active_trending_gainers_losers = set(
-    y_most_active_tickers + 
-    y_trending_tickers + 
-    y_top_gainers_tickers + 
-    y_top_losers_tickers 
-)
-y_unique_most_active_trending_gainers_losers_lists=list(y_unique_most_active_trending_gainers_losers)
+def get_y_unique_most_active_trending_gainers_losers():
+    y_most_active_tickers, y_trending_tickers, y_top_gainers_tickers, y_top_losers_tickers = get_y_tickers()
+    y_unique_most_active_trending_gainers_losers = set(
+        y_most_active_tickers + 
+        y_trending_tickers + 
+        y_top_gainers_tickers + 
+        y_top_losers_tickers 
+    )
+    return list(y_unique_most_active_trending_gainers_losers)
 
-top_short_volume_symbols = get_top_sv_symbol_lists()
-current_regsho_symbols = get_current_regsho_symbols() 
-reg_sho_remove_symbols = get_reg_sho_remove_list() 
+def get_unique_reg_sho_SV():
+    top_short_volume_symbols = get_top_sv_symbol_lists()
+    current_regsho_symbols = get_current_regsho_symbols() 
+    reg_sho_remove_symbols = get_reg_sho_remove_list() 
 
-unique_reg_sho_SV = set(
-    top_short_volume_symbols + 
-    current_regsho_symbols + 
-    reg_sho_remove_symbols
- 
-)
-unique_reg_sho_SV_list=list(unique_reg_sho_SV)
+    unique_reg_sho_SV = set(
+        top_short_volume_symbols + 
+        current_regsho_symbols + 
+        reg_sho_remove_symbols
+    )
+    return list(unique_reg_sho_SV)
 
-all_watchlists_tickers = get_all_watchlists_tickers()
-all_splits_tickers = get_all_splits_tickers()
-all_bought_tickers = get_all_bought_tickers()
+def get_unique_current_all_tickers():
+    y_most_active_tickers, y_trending_tickers, y_top_gainers_tickers, y_top_losers_tickers = get_y_tickers()
+    top_short_volume_symbols = get_top_sv_symbol_lists()
+    current_regsho_symbols = get_current_regsho_symbols() 
+    reg_sho_remove_symbols = get_reg_sho_remove_list() 
+    all_watchlists_tickers = get_all_watchlists_tickers()
+    all_splits_tickers = get_all_splits_tickers()
+    all_bought_tickers = get_all_bought_tickers()
 
-unique_current_all_tickers = set(
-    y_most_active_tickers + 
-    y_trending_tickers + 
-    y_top_gainers_tickers + 
-    y_top_losers_tickers +
-    top_short_volume_symbols + 
-    current_regsho_symbols + 
-    reg_sho_remove_symbols +
-    all_watchlists_tickers +
-    all_splits_tickers +
-    all_bought_tickers
- 
-)
-unique_current_all_tickers_lists=list(unique_current_all_tickers)
+    unique_current_all_tickers = set(
+        y_most_active_tickers + 
+        y_trending_tickers + 
+        y_top_gainers_tickers + 
+        y_top_losers_tickers +
+        top_short_volume_symbols + 
+        current_regsho_symbols + 
+        reg_sho_remove_symbols +
+        all_watchlists_tickers +
+        all_splits_tickers +
+        all_bought_tickers
+    )
+    return list(unique_current_all_tickers)
 
-unique_y_sv_regsho_tickers = set(
-    y_most_active_tickers + 
-    y_trending_tickers + 
-    y_top_gainers_tickers + 
-    y_top_losers_tickers +
-    top_short_volume_symbols + 
-    current_regsho_symbols + 
-    reg_sho_remove_symbols 
- 
-)
-unique_y_sv_regsho_tickers_lists=list(unique_y_sv_regsho_tickers)
+def get_unique_y_sv_regsho_tickers():
+    y_most_active_tickers, y_trending_tickers, y_top_gainers_tickers, y_top_losers_tickers = get_y_tickers()
+    top_short_volume_symbols = get_top_sv_symbol_lists()
+    current_regsho_symbols = get_current_regsho_symbols() 
+    reg_sho_remove_symbols = get_reg_sho_remove_list() 
+
+    unique_y_sv_regsho_tickers = set(
+        y_most_active_tickers + 
+        y_trending_tickers + 
+        y_top_gainers_tickers + 
+        y_top_losers_tickers +
+        top_short_volume_symbols + 
+        current_regsho_symbols + 
+        reg_sho_remove_symbols 
+    )
+    return list(unique_y_sv_regsho_tickers)
 
 def get_user_current_all_tickers(user):
-
+    y_most_active_tickers, y_trending_tickers, y_top_gainers_tickers, y_top_losers_tickers = get_y_tickers()
+    top_short_volume_symbols = get_top_sv_symbol_lists()
+    current_regsho_symbols = get_current_regsho_symbols() 
+    reg_sho_remove_symbols = get_reg_sho_remove_list() 
     user_watchlists_tickers =   get_user_watchlists_tickers(user)
     user_all_bought_tickers =   get_user_all_bought_tickers(user)
 
@@ -107,61 +123,62 @@ def get_user_current_all_tickers(user):
         user_all_bought_tickers
         
         )
-    unique_user_current_all_tickers_lists   =   list(unique_user_current_all_tickers)
+    return list(unique_user_current_all_tickers)
+
     return unique_user_current_all_tickers_lists
 
 # ---------------- Start Watch LIsts Tickers Update --------------------------
 def update_watchlist_news_all_tickers_view(request):
-
+    all_watchlists_tickers = get_all_watchlists_tickers()
     response_data,status = update_news_for_tickers(all_watchlists_tickers)
     return JsonResponse(response_data, status=status)
 
 def update_watchlist_all_tickers_day_stock_info_view(request):
-
+    all_watchlists_tickers = get_all_watchlists_tickers()
     response_data,status = update_tickers_day_stock_info(all_watchlists_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_watchlist_all_tickers_stock_info_view(request):
-
+    all_watchlists_tickers = get_all_watchlists_tickers()
     response_data,status = update_tickers_stock_info(all_watchlists_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_and_merge_missing_short_volume_data_view(request):
- 
+    all_watchlists_tickers = get_all_watchlists_tickers()
     response_data,status = update_and_merge_missing_short_volume_data(all_watchlists_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 
 
 def update_watchlist_tickers_stock_data_view(request): 
-
+    all_watchlists_tickers = get_all_watchlists_tickers()
     response_data,status = update_tickers_stock_data(all_watchlists_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 # ---------------- End Watch LIsts Tickers Update --------------------------
 
 # ---------------- Start Most Active, Tranding, Top gainers and losers Tickers Update --------------------------
 def update_y_all_news_view(request):
-
+    y_unique_most_active_trending_gainers_losers_lists = get_y_unique_most_active_trending_gainers_losers()
     response_data,status = update_news_for_tickers(y_unique_most_active_trending_gainers_losers_lists)
     return JsonResponse(response_data, status=status)
 
 def update_y_all_day_stock_info_view(request):
-
+    y_unique_most_active_trending_gainers_losers_lists = get_y_unique_most_active_trending_gainers_losers()
     response_data,status = update_tickers_day_stock_info(y_unique_most_active_trending_gainers_losers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_y_all_stock_info_view(request):
-
+    y_unique_most_active_trending_gainers_losers_lists = get_y_unique_most_active_trending_gainers_losers()
     response_data,status = update_tickers_stock_info(y_unique_most_active_trending_gainers_losers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_and_merge_y_all_missing_short_volume_data_view(request):
- 
+    y_unique_most_active_trending_gainers_losers_lists = get_y_unique_most_active_trending_gainers_losers()
     response_data,status = update_and_merge_missing_short_volume_data(y_unique_most_active_trending_gainers_losers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 
 
 def update_y_all_stock_data_view(request): 
-
+    y_unique_most_active_trending_gainers_losers_lists = get_y_unique_most_active_trending_gainers_losers()
     response_data,status = update_tickers_stock_data(y_unique_most_active_trending_gainers_losers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 # ---------------- End Most Active, Tranding, Top gainers and losers Tickers Update --------------------------
@@ -169,84 +186,84 @@ def update_y_all_stock_data_view(request):
 
 # ---------------- Start Regs Sho and Short Volume Tickers Update --------------------------
 def update_regsho_SV_news_view(request):
-
+    unique_reg_sho_SV_list = get_unique_reg_sho_SV()
     response_data,status = update_news_for_tickers(unique_reg_sho_SV_list)
     return JsonResponse(response_data, status=status)
 
 def update_regsho_SV_day_stock_info_view(request):
-
+    unique_reg_sho_SV_list = get_unique_reg_sho_SV()
     response_data,status = update_tickers_day_stock_info(unique_reg_sho_SV_list)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_regsho_SV_stock_info_view(request):
-
+    unique_reg_sho_SV_list = get_unique_reg_sho_SV()
     response_data,status = update_tickers_stock_info(unique_reg_sho_SV_list)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_and_merge_regsho_SV_missing_short_volume_data_view(request):
- 
+    unique_reg_sho_SV_list = get_unique_reg_sho_SV()
     response_data,status = update_and_merge_missing_short_volume_data(unique_reg_sho_SV_list)
     return JsonResponse(response_data, safe=False, status=status)
 
 
 def update_regsho_SV_stock_data_view(request): 
-
+    unique_reg_sho_SV_list = get_unique_reg_sho_SV()
     response_data,status = update_tickers_stock_data(unique_reg_sho_SV_list)
     return JsonResponse(response_data, safe=False, status=status)
 # ---------------- End Regs Sho and Short Volume Tickers Update --------------------------
 
 # ---------------- Start Stock Splits Tickers Update --------------------------
 def update_all_splits_tickers_news_view(request):
-
+    all_splits_tickers = get_all_splits_tickers()
     response_data,status = update_news_for_tickers(all_splits_tickers)
     return JsonResponse(response_data, status=status)
 
 def update_all_splits_tickers_day_stock_info_view(request):
-
+    all_splits_tickers = get_all_splits_tickers()
     response_data,status = update_tickers_day_stock_info(all_splits_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_all_splits_tickers_stock_info_view(request):
-
+    all_splits_tickers = get_all_splits_tickers()
     response_data,status = update_tickers_stock_info(all_splits_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_and_merge_all_splits_tickers_missing_short_volume_data_view(request):
- 
+    all_splits_tickers = get_all_splits_tickers()
     response_data,status = update_and_merge_missing_short_volume_data(all_splits_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 
 
 def update_all_splits_tickers_stock_data_view(request): 
-
+    all_splits_tickers = get_all_splits_tickers()
     response_data,status = update_tickers_stock_data(all_splits_tickers)
     return JsonResponse(response_data, safe=False, status=status)
 # ---------------- End Stock Splits Tickers Update --------------------------
 
 # ---------------- Start Current All Tickers Update  Update --------------------------
 def update_current_all_tickers_news_view(request):
-
+    unique_current_all_tickers_lists = get_unique_current_all_tickers()
     response_data,status = update_news_for_tickers(unique_current_all_tickers_lists)
     return JsonResponse(response_data, status=status)
 
 def update_current_all_tickers_day_stock_info_view(request):
-
+    unique_current_all_tickers_lists = get_unique_current_all_tickers()
     response_data,status = update_tickers_day_stock_info(unique_current_all_tickers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_current_all_tickers_stock_info_view(request):
-
+    unique_current_all_tickers_lists = get_unique_current_all_tickers()
     response_data,status = update_tickers_stock_info(unique_current_all_tickers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 
 def update_and_merge_current_all_tickers_missing_short_volume_data_view(request):
- 
+    unique_current_all_tickers_lists = get_unique_current_all_tickers()
     response_data,status = update_and_merge_missing_short_volume_data(unique_current_all_tickers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 
 
 def update_current_all_tickers_stock_data_view(request): 
-
+    unique_current_all_tickers_lists = get_unique_current_all_tickers()
     response_data,status = update_tickers_stock_data(unique_current_all_tickers_lists)
     return JsonResponse(response_data, safe=False, status=status)
 # ---------------- End Current All Tickers Update  Update --------------------------

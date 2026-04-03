@@ -1,0 +1,59 @@
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ----------------------
+# Virtual Environments
+# ----------------------
+stock_venv_01/
+venv/
+env/
+.venv/
+
+# ----------------------
+# Environment Variables (Secrets)
+# ----------------------
+.env
+.env.*
+
+# ----------------------
+# Django
+# ----------------------
+db.sqlite3
+*.log
+staticfiles/
+media/
+
+# ----------------------
+# Editor / IDE
+# ----------------------
+.vscode/
+
+# ----------------------
+# OS Files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# Build / Packaging
+# ----------------------
+*.egg-info/
+dist/
+build/
+
+# ----------------------
+# Testing / Cache
+# ----------------------
+.pytest_cache/
+.coverage
+.ipynb_checkpoints/
+
+# ----------------------
+# Misc
+# ----------------------
+*.swp
