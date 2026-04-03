@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+
+{% block title %}Fetch News Data for Ticker Ranges{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Fetch and Save News Data </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+            <svg class="bi"><use xlink:href="#calendar3"/></svg>
+            This week
+          </button>
+        </div>
+      </div>
+      <p>Total Tickers Available: {{ total_tickers }}</p>
+      <form method="POST" action="/save-news-data/">
+        {% csrf_token %}
+        <p>Enter Ranges (e.g., 1-1000):</p>
+        <input type="text" name="ranges" placeholder="1-1000"><br>
+        <input type="text" name="ranges" placeholder="1001-2000"><br>
+        <input type="text" name="ranges" placeholder="2001-3000"><br>
+        <input type="text" name="ranges" placeholder="3001-4000"><br>
+        <input type="text" name="ranges" placeholder="4001-5000"><br>
+        <input type="text" name="ranges" placeholder="5001-6000"><br>
+        <input type="text" name="ranges" placeholder="6001-7000"><br>
+        <input type="text" name="ranges" placeholder="7001-8000"><br>
+        <input type="text" name="ranges" placeholder="8001-9000"><br>
+        <input type="text" name="ranges" placeholder="9001-10000"><br>
+        <button type="submit">Fetch</button>
+    </form>
+
+    </main>
+{% endblock %}
+

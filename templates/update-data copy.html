@@ -1,0 +1,97 @@
+
+{% extends "base.html" %}
+
+{% block title %}Update All Data{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+
+
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    {% if request.user.is_superuser %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h4>Missing Tickers</h4>
+    </div>
+      <ul>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2" href="{% url 'missing_ticker_in_stock_data' %}">
+            <svg class="bi"><use xlink:href="#info-circle"/></svg>
+            Missing Tickers in Stock Data
+          </a>
+        </li>
+      </ul>
+
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h4>Update Watch Lists Data</h4>
+    </div>
+    <ul>
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" href="{% url 'missing_ticker_in_stock_data' %}">
+          <svg class="bi"><use xlink:href="#info-circle"/></svg>
+          Missing Tickers in Stock Data
+        </a>
+      </li>
+    </ul>
+    
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h4>Update All Data</h4>
+      </div>
+          
+        <ul>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2" id="updateRegShoLink" href="#">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Reg Sho
+                </a>
+              </li>
+ 
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2" id="updateShortVolumeLink" href="#">
+                      <svg class="bi"><use xlink:href="#building-add"/></svg>
+                      Update Short Volume
+                    </a>
+                  </li>
+
+       
+
+
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2" id="updateStockDataLink" href="/save-stock-data/">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update All Stock Data
+                </a>
+              </li>
+  
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2" id="updateStockDataLink" href="/save-news-data/">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update All News Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2" id="updateSecDataLink"  onclick="return confirmProceed(event)" href="/local-sec-data/">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Sec Data
+                </a>
+              </li>
+            
+        </ul>
+
+    {% endif %}
+
+  </main>
+{% endblock %}
+

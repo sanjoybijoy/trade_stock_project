@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Charts</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Stock Charts</h1>
+    {% for item in charts_with_symbols %}
+    <div id="charts-{{ item.symbol }}" class="chart-container">
+      <span class="chart-info">Chart Info</span>
+      {{ item.chart_html|safe }}
+    </div>
+  {% endfor %}
+</body>
+</html>

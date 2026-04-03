@@ -1,0 +1,586 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}Missing Ticker Datas{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+
+
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Missing Ticker in Stock Datas</h3>
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+        <ul class="list-unstyled ps-0">
+  
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#reg-sho-missing-tickers-in-stock-data-collapse" aria-expanded="false">
+                Reg Sho has these tickers but Missing in Stock Data
+              </button>
+            </span>
+    
+            <div class="collapse show" id="reg-sho-missing-tickers-in-stock-data-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if reg_sho_missing_tickers %}
+                        {% for ticker in reg_sho_missing_tickers %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#watchlist-missing-tickers-in-stock-data-collapse" aria-expanded="false">
+                Watchlist has these tickers but Missing in Stock Data
+              </button>
+            </span>
+    
+            <div class="collapse show" id="watchlist-missing-tickers-in-stock-data-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_watchlists_missing_tickers %}
+                        {% for ticker in all_watchlists_missing_tickers %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#sv-missing-tickers-in-stock-data-collapse" aria-expanded="false">
+                Short Volume has these tickers but Missing in Stock Data
+              </button>
+            </span>
+    
+            <div class="collapse show" id="sv-missing-tickers-in-stock-data-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if sv_missing_tickers %}
+                        {% for ticker in sv_missing_tickers %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#y-top-missing-tickers-in-stock-data-collapse" aria-expanded="false">
+                Y Top has these tickers but Missing in Stock Data
+              </button>
+            </span>
+    
+            <div class="collapse show" id="y-top-missing-tickers-in-stock-data-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if y_missing_tickers %}
+                        {% for ticker in y_missing_tickers %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-splits-missing-tickers-in-stock-data-collapse" aria-expanded="false">
+                Stock Splits has these tickers but Missing in Stock Data
+              </button>
+            </span>
+    
+            <div class="collapse show" id="stock-splits-missing-tickers-in-stock-data-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_splits_missing_tickers %}
+                        {% for ticker in all_splits_missing_tickers %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-bought-missing-tickers-in-stock-data-collapse" aria-expanded="false">
+                Stock Bought has these tickers but Missing in Stock Data
+              </button>
+            </span>
+    
+            <div class="collapse show" id="stock-bought-missing-tickers-in-stock-data-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_bought_missing_tickers %}
+                        {% for ticker in all_bought_missing_tickers %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          
+           <!-- Specific Tickers Form -->
+           <form method="post" action="{% url 'update_custom_tickers_tickers_stock_data_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="tickers_form">
+                <label for="tickers">Enter specific tickers (comma-separated):</label>
+                <input type="text" id="tickers" name="tickers" placeholder="e.g., AAPL, MSFT, TSLA">
+                <br>
+                <button type="submit">Fetch Data</button>
+            </form>  
+            <form method="post" action="{% url 'update_custom_tickers_tickers_stock_data_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="tickers_form">
+            
+                <!-- Hidden input field for the ticker list, with name 'tickers' -->
+                <input type="hidden" id="hidden-tickers-stock-data" name="tickers" value="">
+            
+                <br>
+                <button type="submit">All Fetch and Save</button>
+            </form>
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Replace the value with the context variable from Django
+                    const missingTickers = {{ unique_all_missing_in_stock_data_list|safe }};
+                    // Convert the list to a comma-separated string and assign to hidden input field
+                    document.getElementById('hidden-tickers-stock-data').value = missingTickers.join(',');
+                });
+            </script>
+
+
+        </ul>  
+  
+    </div>
+
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Missing Tickers in Daily Stocks Info</h3>
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+        <ul class="list-unstyled ps-0">
+  
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#reg-sho-missing-tickers-in-daily-info-collapse" aria-expanded="false">
+                Reg Sho has these tickers but Missing in Daily Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="reg-sho-missing-tickers-in-daily-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if reg_sho_missing_daily_info %}
+                        {% for ticker in reg_sho_missing_daily_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#watchlist-missing-tickers-in-daily-info-collapse" aria-expanded="false">
+                Watchlist has these tickers but Missing in Daily Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="watchlist-missing-tickers-in-daily-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_watchlists_missing_daily_info %}
+                        {% for ticker in all_watchlists_missing_daily_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#sv-missing-tickers-in-daily-info-collapse" aria-expanded="false">
+                Short Volume has these tickers but Missing in Daily Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="sv-missing-tickers-in-daily-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if sv_missing_daily_info %}
+                        {% for ticker in sv_missing_daily_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#y-top-missing-tickers-in-daily-info-collapse" aria-expanded="false">
+                Y Top has these tickers but Missing in Daily Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="y-top-missing-tickers-in-daily-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if y_missing_daily_info %}
+                        {% for ticker in y_missing_daily_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-splits-missing-tickers-in-daily-info-collapse" aria-expanded="false">
+                Stock Splits has these tickers but Missing in Daily Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="stock-splits-missing-tickers-in-daily-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_splits_missing_daily_info %}
+                        {% for ticker in all_splits_missing_daily_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-bought-missing-tickers-in-daily-info-collapse" aria-expanded="false">
+                Stock Bought has these tickers but Missing in Daily Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="stock-bought-missing-tickers-in-daily-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_bought_missing_daily_info %}
+                        {% for ticker in all_bought_missing_daily_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+            <!-- Specific Tickers Form -->
+            <form method="post" action="{% url 'update_custom_tickers_tickers_day_stock_info_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="tickers_form">
+                <label for="tickers">Enter specific tickers (comma-separated):</label>
+                <input type="text" id="tickers" name="tickers" placeholder="e.g., AAPL, MSFT, TSLA">
+                <br>
+                <button type="submit">Fetch Daily Info Data</button>
+            </form>  
+            <form method="post" action="{% url 'update_custom_tickers_tickers_day_stock_info_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="tickers_form">
+            
+                <!-- Hidden input field for the ticker list, with name 'tickers' -->
+                <input type="hidden" id="hidden-tickers-stock-daily-info" name="tickers" value="">
+            
+                <br>
+                <button type="submit">All Fetch and Save</button>
+            </form>
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Replace the value with the context variable from Django
+                    const missingTickers = {{ unique_all_missing_in_stock_daily_info_list|safe }};
+                    // Convert the list to a comma-separated string and assign to hidden input field
+                    document.getElementById('hidden-tickers-stock-daily-info').value = missingTickers.join(',');
+                });
+            </script>
+
+
+        </ul>    
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Missing Tickers in Stocks Info</h3>
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+        <ul class="list-unstyled ps-0">
+  
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#reg-sho-missing-tickers-in-stocks-info-collapse" aria-expanded="false">
+                Reg Sho has these tickers but Missing in Stocks Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="reg-sho-missing-tickers-in-stocks-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if reg_sho_missing_info %}
+                        {% for ticker in reg_sho_missing_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#watchlist-missing-tickers-in-stocks-info-collapse" aria-expanded="false">
+                Watchlist has these tickers but Missing in Stocks Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="watchlist-missing-tickers-in-stocks-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_watchlists_missing_info %}
+                        {% for ticker in all_watchlists_missing_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#sv-missing-tickers-in-stocks-info-collapse" aria-expanded="false">
+                Short Volume has these tickers but Missing in Stocks Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="sv-missing-tickers-in-stocks-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if sv_missing_info %}
+                        {% for ticker in sv_missing_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#y-top-missing-tickers-in-stocks-info-collapse" aria-expanded="false">
+                Y Top has these tickers but Missing in Stocks Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="y-top-missing-tickers-in-stocks-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if y_missing_info %}
+                        {% for ticker in y_missing_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-splits-missing-tickers-in-stocks-info-collapse" aria-expanded="false">
+                Stock Splits has these tickers but Missing in Stocks Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="stock-splits-missing-tickers-in-stocks-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_splits_missing_info %}
+                        {% for ticker in all_splits_missing_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+          <li class="mb-1">
+            <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+              <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-bought-missing-tickers-in-stocks-info-collapse" aria-expanded="false">
+                Stock Bought has these tickers but Missing in Stocks Info
+              </button>
+            </span>
+    
+            <div class="collapse show" id="stock-bought-missing-tickers-in-stocks-info-collapse">
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% if all_bought_missing_info %}
+                        {% for ticker in all_bought_missing_info %}
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                            
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No missing tickers found.</span>
+                    {% endif %}
+                </div>
+
+            </div>
+          </li>
+                     <!-- Specific Tickers Form -->
+            <form method="post" action="{% url 'update_custom_tickers_tickers_stock_info_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="tickers_form">
+                <label for="tickers">Enter specific tickers (comma-separated):</label>
+                <input type="text" id="tickers" name="tickers" placeholder="e.g., AAPL, MSFT, TSLA">
+                <br>
+                <button type="submit">Fetch Stocks Info Data</button>
+            </form>  
+            
+            <form method="post" action="{% url 'update_custom_tickers_tickers_stock_info_view' %}">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="tickers_form">
+            
+                <!-- Hidden input field for the ticker list, with name 'tickers' -->
+                <input type="hidden" id="hidden-tickers-stock-info" name="tickers" value="">
+            
+                <br>
+                <button type="submit">All Fetch and Save</button>
+            </form>
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Replace the value with the context variable from Django
+                    const missingTickers = {{ unique_all_missing_in_stock_info_list|safe }};
+                    // Convert the list to a comma-separated string and assign to hidden input field
+                    document.getElementById('hidden-tickers-stock-info').value = missingTickers.join(',');
+                });
+            </script>
+            
+            
+            
+            
+
+
+        </ul>    
+    </div>
+
+
+  </main>
+{% endblock %}

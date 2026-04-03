@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Watchlist Screener{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#info-square"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Watchlist Screener</h1>
+    </div>
+    <style>
+        .sort-symbol {
+            font-size: 0.8em;
+            margin-left: 5px;
+            
+        }
+    </style>
+    
+    <div class="table-responsive small">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ticker</th>
+                    <th>Company Name</th>
+                    <th>Price Change %</th>
+                    <th>Price Change</th>
+                    <th>Price</th>
+                    <th>Volume/min</th>
+                    <th>Total Volume</th>
+                    <th>Publish Time</th>
+                    <th>News</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in screener_data %}
+                <tr>
+                    <td>{{ data.id }}</td>
+                    <td><a href="https://finance.yahoo.com/quote/{{ data.symbol }}" target="_blank">{{ data.symbol }}</a></td>
+                    <td>{{ data.long_name }}</td>
+                    <td style="color: {% if data.price_change_pct > 0 %}#4caf50{% elif data.price_change_pct < 0 %}#e63946{% else %}#777{% endif %};">
+                        {{ data.price_change_pct }}
+                    </td>
+                    <td style="color: {% if data.price_change > 0 %}#4caf50{% elif data.price_change < 0 %}#e63946{% else %}#777{% endif %};">
+                        {{ data.price_change }}
+                    </td>
+                    <td>{{ data.current_price }}</td>
+                    <td>{{ data.volume_per_min }}</td>
+                    <td>{{ data.total_volume }}</td>
+                    <td>{{ data.news_publish_time_only }}</td>
+                    <td>
+                        {% if data.news_link %}
+                            <a href="{{ data.news_link }}" target="_blank">{{ data.news_title }}</a>
+                        {% else %}
+                            {{ data.news_title }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                const table = $("table");
+                const tbody = table.find("tbody");
+                const defaultSortIndex = 3; // Column index for "Price Change %"
+                const defaultAscending = false; // False for descending, true for ascending
+        
+                // Default sorting on "Price Change %"
+                const rows = tbody.find("tr").toArray().sort((rowA, rowB) => {
+                    const cellA = $(rowA).find("td").eq(defaultSortIndex).text().trim();
+                    const cellB = $(rowB).find("td").eq(defaultSortIndex).text().trim();
+        
+                    // Try parsing as numbers; fallback to strings
+                    const valA = parseFloat(cellA.replace(/,/g, "")) || cellA;
+                    const valB = parseFloat(cellB.replace(/,/g, "")) || cellB;
+        
+                    return defaultAscending ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                });
+        
+                // Re-attach sorted rows
+                tbody.append(rows);
+        
+                // Add sorting indicator to the "Price Change %" header
+                const defaultHeader = table.find("th").eq(defaultSortIndex);
+                const symbol = defaultAscending ? "↑" : "↓";
+                defaultHeader.addClass(defaultAscending ? "asc" : "desc");
+                defaultHeader.append(` <span class="sort-symbol">${symbol}</span>`);
+        
+                // Handle column header clicks for custom sorting
+                $("th").on("click", function () {
+                    const table = $(this).parents("table");
+                    const tbody = table.find("tbody");
+                    const index = $(this).index();
+                    const ascending = !$(this).hasClass("asc");
+        
+                    // Remove existing sorting classes and symbols from all headers
+                    table.find("th").removeClass("asc desc").find(".sort-symbol").remove();
+        
+                    // Add the appropriate sorting class to the clicked header
+                    $(this).addClass(ascending ? "asc" : "desc");
+        
+                    // Add the sorting symbol
+                    const symbol = ascending ? "↑" : "↓";
+                    $(this).append(` <span class="sort-symbol">${symbol}</span>`);
+        
+                    // Sort rows based on the selected column
+                    const rows = tbody.find("tr").toArray().sort((rowA, rowB) => {
+                        const cellA = $(rowA).find("td").eq(index).text().trim();
+                        const cellB = $(rowB).find("td").eq(index).text().trim();
+        
+                        // Try parsing as numbers; fallback to strings
+                        const valA = parseFloat(cellA.replace(/,/g, "")) || cellA;
+                        const valB = parseFloat(cellB.replace(/,/g, "")) || cellB;
+        
+                        return ascending ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                    });
+        
+                    // Re-attach sorted rows
+                    tbody.append(rows);
+                });
+            });
+        </script>
+        
+        
+               
+        
+    </div>
+</main>
+{% endblock %}

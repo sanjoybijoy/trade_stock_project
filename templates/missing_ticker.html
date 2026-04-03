@@ -1,0 +1,83 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}Missing Ticker Datas{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+
+
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h3>Missing Ticker Datas</h3>
+      </div>
+  
+        <!-- Check if there are missing tickers and display them -->
+    
+        <h4>Reg Sho or Watch List have these tickers but Missing in Stock Data</h4>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            {% if missing_tickers_list %}
+                {% for ticker in missing_tickers_list %}
+                    <div class="d-flex align-items-center border p-2 rounded">
+                        <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                      
+                    </div>
+                {% endfor %}
+            {% else %}
+                <span class="text-muted">No missing tickers found.</span>
+            {% endif %}
+        </div>
+
+
+        <!-- Check if there are missing tickers and display them -->
+    
+        <h4>Watch Lists have these tickers but Missing in Stock Data</h4>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            {% if watchlist_missing_in_stock_data %}
+                {% for ticker in watchlist_missing_in_stock_data %}
+                    <div class="d-flex align-items-center border p-2 rounded">
+                        <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                      
+                    </div>
+                {% endfor %}
+            {% else %}
+                <span class="text-muted">No missing tickers found.</span>
+            {% endif %}
+        </div>
+
+        <!-- Check if there are missing tickers for Short volume in Stock data and display them -->
+
+        <h4>Short Volume has these tickers but Missing in Stock Data</h4>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            {% if sv_missing_tickers_list %}
+                {% for ticker in sv_missing_tickers_list %}
+                    <div class="d-flex align-items-center border p-2 rounded">
+                        <span class="me-2" style="font-size: 12px;"><a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a></span>
+                        
+                    </div>
+                {% endfor %}
+            {% else %}
+                <span class="text-muted">No missing tickers found.</span>
+            {% endif %}
+        </div>
+              
+    
+
+      
+
+ 
+  </main>
+{% endblock %}

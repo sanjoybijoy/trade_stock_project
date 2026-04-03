@@ -1,0 +1,127 @@
+
+{% extends "base.html" %}
+
+{% block title %}Today's News for Your Watchlist{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#info-square"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+
+
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h3>Today's News for Your Watchlist</h3>
+      </div>
+
+        {% if news_today %}
+        <ul>
+            {% for news in news_today %}
+                <li style="margin-bottom: 5px;">
+                    <!-- Stock symbol -->
+                    <span style="border: 1px solid black;padding: 2px;border-radius: 10px;margin-right: 5px;">
+                        <strong><a href="https://finance.yahoo.com/quote/{{ news.news_symbol.symbol }}">{{ news.news_symbol.symbol }}</a></strong>
+
+                        <!-- Price change percentage -->
+                        {% if news.price_change_pct != "N/A" %}
+                        <span style="
+                            font-weight: normal; 
+                            color: {% if news.price_change_pct > 0 %} #4caf50; /* Green for positive */ 
+                                    {% elif news.price_change_pct < 0 %} #e63946; /* Red for negative */ 
+                                    {% else %} #777; /* Gray for N/A */ {% endif %};">
+                            {{ news.price_change_pct }}%
+                        </span>
+                        {% else %}
+                            <span style="color: #777;">N/A</span>
+                        {% endif %}
+                    </span>   
+                    <!-- Stock long name -->
+                    <span style="color: rgb(128, 90, 90);">
+                        (<i>{{ news.symbol_long_name }}</i>)
+                    </span>
+                    
+
+                    
+                    <!-- Publish date and time -->
+                    <em>
+                        <span style="color: rgb(241, 97, 97);">[{{ news.publish_date }}</span>, 
+                        <span>{{ news.publish_time }}</span>]:
+                    </em>
+                    
+                    <!-- News title -->
+                    <a href="{{ news.NewsLink }}" target="_blank">{{ news.NewsTitle }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No news found for your watchlist symbols for today.</p>
+        {% endif %}
+        
+    
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Yesterday's News for Your Watchlist</h3>
+    </div>     
+      
+      {% if news_yesterday %}
+          <ul>
+              {% for news in news_yesterday %}
+              <li style="margin-bottom: 5px;">
+                <!-- Stock symbol -->
+                <span style="border: 1px solid black;padding: 2px;border-radius: 10px;margin-right: 5px;">
+                    <strong><a href="https://finance.yahoo.com/quote/{{ news.news_symbol.symbol }}">{{ news.news_symbol.symbol }}</a></strong>
+
+                    <!-- Price change percentage -->
+                    {% if news.price_change_pct != "N/A" %}
+                    <span style="
+                        font-weight: normal; 
+                        color: {% if news.price_change_pct > 0 %} #4caf50; /* Green for positive */ 
+                                {% elif news.price_change_pct < 0 %} #e63946; /* Red for negative */ 
+                                {% else %} #777; /* Gray for N/A */ {% endif %};">
+                        {{ news.price_change_pct }}%
+                    </span>
+                    {% else %}
+                        <span style="color: #777;">N/A</span>
+                    {% endif %}
+                </span>   
+                <!-- Stock long name -->
+                <span style="color: rgb(128, 90, 90);">
+                    (<i>{{ news.symbol_long_name }}</i>)
+                </span>
+                
+
+                
+                <!-- Publish date and time -->
+                <em>
+                    <span style="color: rgb(241, 97, 97);">[{{ news.publish_date }}</span>, 
+                    <span>{{ news.publish_time }}</span>]:
+                </em>
+                
+                <!-- News title -->
+                <a href="{{ news.NewsLink }}" target="_blank">{{ news.NewsTitle }}</a>
+            </li>
+              {% endfor %}
+          </ul>
+      {% else %}
+          <p>No news found for your watchlist symbols for yesterday.</p>
+      {% endif %}
+      
+
+     
+      
+
+
+
+  </main>
+{% endblock %}
+

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Reg Sho Symbols{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"> Symbol Changes as of {{ latest_date }}</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+            <svg class="bi"><use xlink:href="#calendar3"/></svg>
+            This week
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive small">
+        <div class="row">
+            <div class="col">
+                <h3>Current List</h3>
+                <table class="table table-striped table-sm">   
+                    <tr>
+                        <th>ID</th>
+                        <th>Symbol</th>
+                        <th>Security Name</th>
+                    </tr>
+                    {% for item in current_list_data %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td><a href="https://finance.yahoo.com/quote/{{ item.symbol }}" target="_blank">{{ item.symbol }}</a></td>
+                        <td>{{ item.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col">
+                <h3>Last 10 Days (Newly Added)</h3>
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>ID</th>
+                        <th>Symbol</th>
+                        <th>Date Added</th>
+                    </tr>
+                    {% for id, symbol, date in newly_added_data %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td><a href="https://finance.yahoo.com/quote/{{ symbol }}" target="_blank">{{ symbol }}</a></td>
+                        <td>{{ date }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col">
+                <h3>Last 10 Days (Deleted)</h3>
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>ID</th>
+                        <th>Symbol</th>
+                        <th>Date Deleted</th>
+                    </tr>
+                    {% for id, symbol, date in deleted_data %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td><a href="https://finance.yahoo.com/quote/{{ symbol }}" target="_blank">{{ symbol }}</a></td>
+                        <td>{{ date }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+          </div>
+        
+        
+       
+        
+        
+    </div>
+
+
+    </main>
+{% endblock %}

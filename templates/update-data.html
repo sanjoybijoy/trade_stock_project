@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+
+{% block title %}Update All Data{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+
+
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    {% if request.user.is_superuser %}
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <ul class="list-unstyled ps-0">
+
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#earnings-data-update-collapse" aria-expanded="true">
+              Earnings Data Update
+            </button>
+          </span>
+  
+          <div class="collapse show" id="earnings-data-update-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'earnings_update_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Individual Custom Earnings Data
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#snp-500-data-update-collapse" aria-expanded="true">
+              SNP-500 Data Update
+            </button>
+          </span>
+  
+          <div class="collapse show" id="snp-500-data-update-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_snp_500_tickers_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update SNP-500 Data
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#show-missing-tickers-collapse" aria-expanded="false">
+              Missing Tickers
+            </button>
+          </span>
+  
+          <div class="collapse" id="show-missing-tickers-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'missing_ticker_info_in_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#info-circle"/></svg>
+                  Missing Tickers in Stock Data 
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#reg-sho-short-volume-collapse" aria-expanded="false">
+              Reg Sho Security and Short Volume Data Update
+            </button>
+          </span>
+  
+          <div class="collapse show" id="reg-sho-short-volume-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2" id="updateRegShoLink" href="#">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Reg Sho Data 
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2" id="updateShortVolumeLink" href="#">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Short Volume Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#current-all-tickers-collapse" aria-expanded="false">
+              Current All Tickers Update 
+            </button>
+          </span>
+  
+          <div class="collapse show" id="current-all-tickers-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_current_all_tickers_news_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Current All Tickers News Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_current_all_tickers_day_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Current All Tickers Stock Daily Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_current_all_tickers_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Current All Tickers Stock Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_and_merge_current_all_tickers_missing_short_volume_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Merge SV to Stock Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_current_all_tickers_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Current All Tickers Stock Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#individual-custom-ticker-collapse" aria-expanded="false">
+              Individual Custom Update 
+            </button>
+          </span>
+  
+          <div class="collapse" id="individual-custom-ticker-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_custom_tickers_news_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Individual Custom News Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_custom_tickers_tickers_day_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Individual Custom Stock Daily Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_custom_tickers_tickers_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Individual Custom Stock Data
+                </a>
+              </li>
+
+
+              </ul>
+
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#watch-lists-collapse" aria-expanded="false">
+              Watch Lists Tickers Update
+            </button>
+          </span>
+  
+          <div class="collapse" id="watch-lists-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_watchlist_news_all_tickers_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Watchlist News Data 
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_watchlist_all_tickers_day_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Watchlist Stock Daily Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_watchlist_all_tickers_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Watchlist Stock Info 
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_and_merge_missing_short_volume_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Merge SV to Stock Data 
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_watchlist_tickers_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Watchlist Stock Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#y-top-tickers-collapse" aria-expanded="false">
+              Most Active, Tranding, Top Gainers and Losers 
+            </button>
+          </span>
+  
+          <div class="collapse" id="y-top-tickers-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_y_all_news_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Y All News Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_y_all_day_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Y All Stock Daily Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_y_all_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Y All Stock Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_and_merge_y_all_missing_short_volume_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Merge SV to Stock Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_y_all_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Y All Stock Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#regsho-sv-tickers-collapse" aria-expanded="false">
+              Reg Sho and Short Volime Tickers Update 
+            </button>
+          </span>
+  
+          <div class="collapse" id="regsho-sv-tickers-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_regsho_SV_news_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Reg Sho & SV News Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_regsho_SV_day_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Reg Sho & SV Stock Daily Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_regsho_SV_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Reg Sho & SV Stock Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_and_merge_regsho_SV_missing_short_volume_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Merge SV to Stock Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_regsho_SV_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Reg Sho & SV Stock Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#stock-split-tickers-collapse" aria-expanded="false">
+              Stock Splits Tickers Update 
+            </button>
+          </span>
+  
+          <div class="collapse" id="stock-split-tickers-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_all_splits_tickers_news_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Ticker Splits News Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_all_splits_tickers_day_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Ticker Splits Stock Daily Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_all_splits_tickers_stock_info_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Ticker Splits Stock Info
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_and_merge_all_splits_tickers_missing_short_volume_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Merge SV to Stock Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'update_all_splits_tickers_stock_data_view' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update Ticker Splits Stock Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+
+        <li class="mb-1">
+          <span class="custom-update-data-heading d-flex justify-content-between align-items-center mb-1 text-body-secondary ">
+            <button class="btn btn-toggle rounded border-0  collapsed" data-bs-toggle="collapse" data-bs-target="#all-data-collapse" aria-expanded="false">
+              All Data Update 
+            </button>
+          </span>
+  
+          <div class="collapse" id="all-data-collapse">
+            <ul class="nav flex-column mb-auto btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'get_multiple_news_data' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update All News Data 
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="#">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Merge SV to Stock Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  href="{% url 'save_stock_data' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update All Stock Data
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2"  id="updateSecDataLink"  onclick="return confirmProceed(event)" href="{% url 'fetch_and_save_sec_symbols_list' %}">
+                  <svg class="bi"><use xlink:href="#building-add"/></svg>
+                  Update SEC Data
+                </a>
+              </li>
+           
+  
+            </ul>
+          </div>
+        </li>
+
+
+      </ul>
+    </div>
+
+    
+    {% endif %}
+
+  </main>
+{% endblock %}

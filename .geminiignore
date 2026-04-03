@@ -1,0 +1,21 @@
+# Exclude the virtual environment (CRITICAL)
+stock_venv_01/
+
+# Exclude large data and temporary files
+api/
+SyncApp/
+data/
+**/migrations/
+
+*.csv
+*.json
+*.log
+*.h5
+__pycache__/
+*.pyc
+
+# Exclude VS Code settings
+.vscode/
+
+# Exclude SQLite database if it exists
+db.sqlite3

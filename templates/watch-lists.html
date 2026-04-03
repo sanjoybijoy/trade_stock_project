@@ -1,0 +1,104 @@
+{% extends "charts-page.html" %}
+
+{% block title %} {{watch_list_name}} {% endblock %}
+
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'watch-list-detail' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <main  class="col-md-9 ms-sm-auto col-lg-10 px-md-4"> 
+      
+        <!-- Fixed Horizontal Navigation Links with Scroll Controls -->
+        <div class="sticky-top bg-white border-bottom shadow-sm">
+            <div class="nav-scroller py-1">
+            <nav class="nav d-flex justify-content-start">
+                <ul class="pagination mb-0">
+                {% for item in charts_with_symbols %}
+                <li class="page-item">
+                    <a class="page-link" href="#charts-{{ item.symbol }}" data-target="charts-{{ item.symbol }}">{{ item.symbol|safe }}</a>
+                </li>
+                {% endfor %}
+                </ul>
+            </nav>
+            </div>
+        </div>
+
+        <div class="cus-sticky-top d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          <p><span style="font-size: 15;"><b>{{watch_list_name}}</b></span>: List is Ordered by 1D Avg Top Short Volume</p> 
+          <div class=" btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2 ">
+              
+              <form method="get" action="{% url 'watch-list-detail' watch_list_name %}">
+                <input type="hidden" name="clear_cache" value="true">
+                <button class="btn btn-sm btn-outline-secondary" type="submit">Clear</button>
+            </form>
+            
+              <button class="custom-legend-btn btn btn-sm btn-outline-secondary" onclick="toggleLegend()">Legend</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="toggleAllChartInfo()">Info</button>
+              <button class="btn btn-sm btn-outline-secondary" id="toggleAnnotationsInRange">P.Change</button>
+            </div>
+
+          </div>
+        </div>
+
+<style>
+ 
+
+</style>
+
+      <!-- Chart Content -->
+      {% for item in charts_with_symbols %}
+        <div id="charts-{{ item.symbol }}" class="chart-container">
+
+          <div class="chart-info" id="chartInfo-{{ item.symbol }}">
+            <span><b><u>Summary</u></b></span><br>
+            
+            <span><b>50D Avg: </b>{{ item.fifty_day_average }}</span><br>
+            <span><b>52W R: </b>{{ item.fifty_two_week_range }}</span><br>
+            <span><b>Market Cap: </b>{{ item.market_cap }}</span><br>
+            <span><b>Avg Vol (3M): </b>{{ item.average_volume_3m }}</span><br>
+            <span><b>Avg Vol (10D): </b>{{ item.average_volume_10d }}</span><br>
+            <span><b>Last Split Ratio: </b>{{ item.last_split_ratio }}</span><br>
+            <span><b>Date: </b>{{ item.last_split_date }}</span><br>
+            
+            <span><b><u>Share Stats.</u></b></span><br>
+            <span><b>Outst.: </b>{{ item.shares_outstanding }}</span><br>
+            <span><b>Float: </b>{{ item.float_shares }}</span><br>
+            <span><b>Insiders: </b>{{ item.held_percent_insiders }}</span><br>
+            <span><b>Instit.: </b>{{ item.held_percent_institutions }}</span><br>
+            <span><b>Short: </b>{{ item.shares_short }}</span><br>
+            <span><b>Of Float: </b>{{ item.short_percent_of_float }}</span><br>
+            
+            <span><b><u>Financials</u></b></span><br>
+            <span><b>Revenue: </b>{{ item.total_revenue }}</span><br>
+            <span><b>Net Inc.: </b>{{ item.net_income }}</span><br>
+            <span><b>Assets: </b>{{ item.total_assets }}</span><br>
+            <span><b>Liabilities: </b>{{ item.total_liabilities }}</span><br>
+            <span><b>Equity: </b>{{ item.total_equity }}</span><br>
+          </div>
+          
+          <div id="plotly-chart">
+            {{ item.chart_html|safe }}
+        </div>
+        </div>
+
+      {% endfor %}
+
+
+      </main>
+    
+
+      
+{% endblock %}      
+

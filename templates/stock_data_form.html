@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Fetch and Save Stock Data{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+{% block content %}
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Fetch and Save Stock Data </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+            <svg class="bi"><use xlink:href="#calendar3"/></svg>
+            This week
+          </button>
+        </div>
+      </div>
+      <h4>Fetch Using Range</h4>
+      <p>Total Tickers Available: {{ total_tickers }}</p>
+      <!-- Range-based Form -->
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="ranges_form">
+        <label for="ranges">Enter ticker ranges (comma-separated):</label>
+        <input type="text" id="ranges" name="ranges" placeholder="e.g., 1-1000, 1001-2000">
+        <br>
+        <button type="submit">Fetch Data</button>
+      </form>
+      <br>
+      <h4>Fetch Using Tickers</h4>
+      <!-- Specific Tickers Form -->
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="tickers_form">
+        <label for="tickers">Enter specific tickers (comma-separated):</label>
+        <input type="text" id="tickers" name="tickers" placeholder="e.g., AAPL, MSFT, TSLA">
+        <br>
+        <button type="submit">Fetch Data</button>
+      </form>
+
+
+    </main>
+{% endblock %}
+

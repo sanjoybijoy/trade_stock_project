@@ -1,0 +1,9 @@
+{% if request.user.is_authenticated %}
+<!--This is main body page-->
+{% include 'index.html' %}
+
+{% else %}
+<!--This is loggoed out page-->
+{% include 'home.html' %} 
+
+{% endif %}

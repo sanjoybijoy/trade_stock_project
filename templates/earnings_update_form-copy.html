@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{{ title_msg }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="tickers" class="form-label">Enter Ticker Symbols (comma separated)</label>
+                            <input type="text" class="form-control" id="tickers" name="tickers" placeholder="NVDA, TSLA, AAPL" required>
+                            <div class="form-text">Example: NVDA, TSLA, AAPL</div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Fetch Earnings Data</button>
+                    </form>
+
+                    {% if results %}
+                    <div class="mt-4">
+                        <h5>Results:</h5>
+                        <ul class="list-group">
+                            {% for res in results %}
+                            <li class="list-group-item">{{ res }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

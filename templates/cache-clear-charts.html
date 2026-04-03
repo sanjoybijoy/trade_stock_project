@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %} {{title_text}} {% endblock %}
+
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'watch-list-detail' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <main  class="col-md-9 ms-sm-auto col-lg-10 px-md-4"> 
+      
+        <!-- Fixed Horizontal Navigation Links with Scroll Controls -->
+        <div class="sticky-top bg-white border-bottom shadow-sm">
+            <div class="nav-scroller py-1">
+            <nav class="nav d-flex justify-content-start">
+                <ul class="pagination mb-0">
+                {% for item in charts_with_symbols %}
+                <li class="page-item">
+                    <a class="page-link" href="#charts-{{ item.symbol }}" data-target="charts-{{ item.symbol }}">{{ item.symbol|safe }}</a>
+                </li>
+                {% endfor %}
+                </ul>
+            </nav>
+            </div>
+        </div>
+
+        <div class="cus-sticky-top d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          <p><span style="font-size: 15;">{{message}} </p> 
+          <div class=" btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2 ">
+              
+                
+                <a href="{{request.path}}"><button class="btn btn-sm btn-outline-secondary" type="submit">Create Chart Again</button>
+                </a>
+            
+              
+            </div>
+
+          </div>
+        </div>
+
+<style>
+  .chart-container{
+    
+  }
+  .chart-info{
+    background: #fff;
+    float: right;
+    margin-right: 2%;
+    z-index: 1000;
+    position: relative;
+    font-size: 11px;
+    color: black;
+    padding: 7px;
+    margin-top: 160px;
+    border: solid 1px;
+    border-radius: 10px;
+
+
+    }
+
+</style>
+
+
+      </main>
+    
+
+      
+{% endblock %}      
+

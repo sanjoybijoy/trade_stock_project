@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Stock Splits{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'stock_day_info_watchlists_tickers_view' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"> Stock Splits </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+            <svg class="bi"><use xlink:href="#calendar3"/></svg>
+            This week
+          </button>
+        </div>
+      </div>
+    <!-- Form to Add a New Split -->
+    {% if request.user.is_superuser %}
+    <div id="tickerSplitFormContainer" class="mb-4">
+        <form method="post" action="{% url 'ticker_splits_view' %}" class="form-inline row g-2">
+            {% csrf_token %}
+            <div class="col-auto">
+                <input type="date" name="date" class="form-control" placeholder="Date" required>
+            </div>
+            <div class="col-auto">
+                <input type="text" name="symbol" class="form-control" placeholder="Symbol" required>
+            </div>
+            <div class="col-auto">
+                <input type="text" name="ratio" class="form-control" placeholder="Split Ratio" required>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success">Add Split</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    
+
+      <div class="table-responsive small">
+        <div class="row">
+            <div class="col">
+                <h3>Last Splits</h3>
+                <table class="table table-striped table-sm">   
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>Symbol</th>
+                        <th>Security Name</th>
+                        <th>Sector</th>
+                        <th>Splits Ratio</th>
+                        {% if request.user.is_superuser %}
+                        <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                    {% for split in last_splits %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ split.date }}</td>
+                      <td><a href="https://finance.yahoo.com/quote/{{ split.symbol }}" target="_blank">{{ split.symbol }}</a></td>
+                      <td>{{ split.name }}</td>
+                      <td>{{ split.sector }}</td>
+                      <td>{{ split.ratio }}</td>
+                      {% if request.user.is_superuser %}
+                      <td>
+                        <form method="post" action="{% url 'delete_split' split.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                        </form>
+                      </td>
+                      {% endif %}
+                  </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col">
+                <h3>Next Splits</h3>
+                <table class="table table-striped table-sm">   
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>Symbol</th>
+                        <th>Security Name</th>
+                        <th>Sector</th>
+                        <th>Splits Ratio</th>
+                        {% if request.user.is_superuser %}
+                        <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                    {% for split in next_splits %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ split.date }}</td>
+                      <td><a href="https://finance.yahoo.com/quote/{{ split.symbol }}" target="_blank">{{ split.symbol }}</a></td>
+                      <td>{{ split.name }}</td>
+                      <td>{{ split.sector }}</td>
+                      <td>{{ split.ratio }}</td>
+                      {% if request.user.is_superuser %}
+                      <td>
+                        <form method="post" action="{% url 'delete_split' split.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                        </form>
+                      </td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+
+          </div>
+        
+        
+       
+        
+        
+    </div>
+
+
+    </main>
+{% endblock %}

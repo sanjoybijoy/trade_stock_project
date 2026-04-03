@@ -1,0 +1,210 @@
+
+{% extends "charts-page.html" %}
+
+{% block title %}{{title_text}}{% endblock %}
+{% block sidebar_content %}
+
+    <!-- You can still use all_watch_lists if you need them -->
+    {% for list in all_watch_lists %}
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2" 
+           href="{% url 'watch-list-detail' list.name %}">
+            <svg class="bi"><use xlink:href="#bar-chart-line-fill"/></svg>
+            {{ list.name }}
+        </a>
+    </li>
+    {% endfor %}
+{% endblock %}
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+        <!-- Fixed Horizontal Navigation Links with Scroll Controls -->
+        <div class="sticky-top bg-white border-bottom shadow-sm">
+            <div class="nav-scroller py-1">
+            <nav class="nav d-flex justify-content-start">
+                <ul class="pagination mb-0">
+                {% for item in charts_with_symbols %}
+                <li class="page-item">
+                    <a class="page-link" href="#charts-{{ item.symbol }}" data-target="charts-{{ item.symbol }}">{{ item.symbol|safe }}</a>
+                </li>
+                {% endfor %}
+                </ul>
+            </nav>
+            </div>
+        </div>
+        <div class="cus-sticky-top d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+            <p> {{heading_text}}</p> 
+            <div class=" btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2 ">
+                <form method="get" action="{{page_path}}">
+                    <input type="hidden" name="clear_cache" value="true">
+                    <button class="btn btn-sm btn-outline-secondary" type="submit">Clear</button>
+                </form>
+                <button class="custom-legend-btn btn btn-sm btn-outline-secondary" onclick="toggleLegend()">Legend</button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="toggleAllChartInfo()">Info</button>
+                <button class="btn btn-sm btn-outline-secondary" id="toggleAnnotationsInRange">P.Change</button>
+              </div>
+  
+            </div>
+          </div>
+  
+ 
+        <!-- Chart Content -->
+        {% for item in charts_with_symbols %}
+          <div id="charts-{{ item.symbol }}" class="chart-container">
+                {% if item.company_name %}
+                <div class="chart-info" id="chartInfo-{{ item.symbol }}">
+                <span><b><u>Summary</u></b></span><br>
+                
+                {% if item.fifty_day_average %}
+                    <span><b>50D Avg: </b>{{ item.fifty_day_average }}</span><br>
+                {% endif %}
+                
+                {% if item.fifty_two_week_range %}
+                    <span><b>52W R: </b>{{ item.fifty_two_week_range }}</span><br>
+                {% endif %}
+                
+                {% if item.market_cap %}
+                    <span><b>Market Cap: </b>{{ item.market_cap }}</span><br>
+                {% endif %}
+                
+                {% if item.average_volume_3m %}
+                    <span><b>Avg Vol (3M): </b>{{ item.average_volume_3m }}</span><br>
+                {% endif %}
+                
+                {% if item.average_volume_10d %}
+                    <span><b>Avg Vol (10D): </b>{{ item.average_volume_10d }}</span><br>
+                {% endif %}
+                
+                {% if item.last_split_ratio %}
+                    <span><b>Last Split Ratio: </b>{{ item.last_split_ratio }}</span><br>
+                {% endif %}
+                
+                {% if item.last_split_date %}
+                    <span><b>Date: </b>{{ item.last_split_date }}</span><br>
+                {% endif %}
+                
+                <span><b><u>Share Stats.</u></b></span><br>
+                
+                {% if item.shares_outstanding %}
+                    <span><b>Outst.: </b>{{ item.shares_outstanding }}</span><br>
+                {% endif %}
+                
+                {% if item.float_shares %}
+                    <span><b>Float: </b>{{ item.float_shares }}</span><br>
+                {% endif %}
+                
+                {% if item.held_percent_insiders %}
+                    <span><b>Insiders: </b>{{ item.held_percent_insiders }}</span><br>
+                {% endif %}
+                
+                {% if item.held_percent_institutions %}
+                    <span><b>Instit.: </b>{{ item.held_percent_institutions }}</span><br>
+                {% endif %}
+                
+                {% if item.shares_short %}
+                    <span><b>Short: </b>{{ item.shares_short }}</span><br>
+                {% endif %}
+                
+                {% if item.short_percent_of_float %}
+                    <span><b>Of Float: </b>{{ item.short_percent_of_float }}</span><br>
+                {% endif %}
+                
+                <span><b><u>Financials</u></b></span><br>
+                
+                {% if item.total_revenue %}
+                    <span><b>Revenue: </b>{{ item.total_revenue }}</span><br>
+                {% endif %}
+                
+                {% if item.net_income %}
+                    <span><b>Net Inc.: </b>{{ item.net_income }}</span><br>
+                {% endif %}
+                
+                {% if item.total_assets %}
+                    <span><b>Assets: </b>{{ item.total_assets }}</span><br>
+                {% endif %}
+                
+                {% if item.total_liabilities %}
+                    <span><b>Liabilities: </b>{{ item.total_liabilities }}</span><br>
+                {% endif %}
+                
+                {% if item.total_equity %}
+                    <span><b>Equity: </b>{{ item.total_equity }}</span><br>
+                {% endif %}
+                </div>
+            {% endif %}
+              
+              <div id="plotly-chart">
+                {{ item.chart_html|safe }}
+            </div>
+        </div>
+        {% endfor %}
+      </main>
+     
+<script>
+// JavaScript for Active Link Highlighting   
+document.addEventListener("DOMContentLoaded", function () {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            if (entry.intersectionRatio > 0) {
+                document.querySelector(`.page-link[href="#${id}"]`).classList.add('active');
+            } else {
+                document.querySelector(`.page-link[href="#${id}"]`).classList.remove('active');
+            }
+        });
+    });
+
+    // Track all containers
+    document.querySelectorAll('.chart-container').forEach((section) => {
+        observer.observe(section);
+    });
+
+    // Ensure the navigation link reflects the active section on click as well
+    document.querySelectorAll('.page-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelectorAll('.page-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+});
+
+        // Sticky Header 
+        document.addEventListener("DOMContentLoaded", function () {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    if (entry.intersectionRatio > 0) {
+                        document.querySelector(`.page-link[href="#${id}"]`).classList.add('active');
+                    } else {
+                        document.querySelector(`.page-link[href="#${id}"]`).classList.remove('active');
+                    }
+                });
+            });
+
+            // Track all containers
+            document.querySelectorAll('.chart-container').forEach((section) => {
+                observer.observe(section);
+            });
+
+            // Ensure the navigation link reflects the active section on click as well
+            document.querySelectorAll('.page-link').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent the default anchor behavior
+                    const targetId = link.getAttribute("href");
+                    const targetSection = document.querySelector(targetId);
+                    const offsetTop = targetSection.offsetTop;
+
+                    // Scroll to the target section accounting for sticky header height
+                    window.scrollTo({
+                        top: offsetTop - document.querySelector('.sticky-top').offsetHeight, // Adjust this value based on your sticky header's height
+                        behavior: "smooth"
+                    });
+                });
+            });
+        });
+
+
+</script>
+
+{% endblock %}    
