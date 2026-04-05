@@ -197,29 +197,26 @@ def charts_page(request):
     })
 
 def daily_info_page(request):
-    # Fetch all watch lists from the database
-    #all_watch_lists = WatchList.objects.all()
-        # Fetch user watchlists
-    user_watchlists = WatchList.objects.filter(user=request.user)
-
-    # Get all symbols from the user's watchlists
-    watchlist_symbols = WatchListSymbol.objects.filter(watch_list__in=user_watchlists).values_list('symbol', flat=True)
-
-    formatted_day_stocks = stock_day_info(watchlist_symbols)
-
     if request.user.is_authenticated:
+        # Fetch user watchlists
+        user_watchlists = WatchList.objects.filter(user=request.user)
+
+        # Get all symbols from the user's watchlists
+        watchlist_symbols = WatchListSymbol.objects.filter(watch_list__in=user_watchlists).values_list('symbol', flat=True)
+
+        formatted_day_stocks = stock_day_info(watchlist_symbols)
         all_watch_lists = WatchList.objects.filter(user=request.user).order_by('order')
     else:
+        formatted_day_stocks = []
         all_watch_lists = []
+
     msg = 'Watch Lists'
     # Pass all watch lists and the selected watch list to the template
     return render(request, 'daily-info-home.html', {
         'day_stocks': formatted_day_stocks,
         'all_watch_lists': all_watch_lists,
         'nav_text': msg
-        
     })
-
 def get_previous_trading_day(date):
     """Return the last trading day before a given date."""
     nasdaq = mcal.get_calendar('NASDAQ')

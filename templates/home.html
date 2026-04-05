@@ -368,7 +368,7 @@
             </li>
           {% endif %}
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="{% url 'top_average_short_volume_charts' %}">
+              <a class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#graph-up"/></svg>
                 Top Avg Short Volume Charts
               </a>
@@ -387,6 +387,8 @@
               </a>
             </li>
           {% endif %}
+
+
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="{% url 'reg_sho_symbols_data' %}">
                 <svg class="bi"><use xlink:href="#people"/></svg>
@@ -395,6 +397,9 @@
             </li>
 
           </ul>
+
+
+          
           {% if request.user.is_authenticated %}
           <!--This is main body page-->
          

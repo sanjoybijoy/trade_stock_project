@@ -1,10 +1,12 @@
 
+
 {% extends "daily-info-page.html" %}
 
 {% block title %}Home - Daily Info{% endblock %}
 
 {% block content %}
   <main id="mainContent" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      {% if request.user.is_authenticated %}
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">All Tickers: Watch Lists</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
@@ -199,7 +201,32 @@
             }
         }
     </script>
+    {% else %}
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Daily Info</h1>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Top Avg Short Volume</h5>
+              <p class="card-text">View the top average short volume data.</p>
+              <a href="{% url 'stock_day_info_top_SV_view' %}" class="btn btn-primary">Go to Top Avg SV</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Current Reg Sho Lists</h5>
+              <p class="card-text">View the current Reg Sho lists.</p>
+              <a href="{% url 'stock_day_info_reg_show_view' %}" class="btn btn-primary">Go to Reg Sho Lists</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
 
-  
+
     </main>
 {% endblock %}

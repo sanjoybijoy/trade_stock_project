@@ -130,7 +130,7 @@ urlpatterns = [
 
     path('get_order_ids/', views.get_order_ids, name='get_order_ids'),
 
-    # HOME collapsible nav
+    # Logged-in HOME collapsible nav
     path('home/reg-sho-symbols/', views.reg_sho_symbols_view, name='reg_sho_symbols_data'),
     path('home/manage-watch-list/', views.manage_watch_list, name='manage_watch_list'), 
     path('home/splits/', views.ticker_splits_view, name='ticker_splits_view'),

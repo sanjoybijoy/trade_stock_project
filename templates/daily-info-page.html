@@ -467,25 +467,27 @@
                 </button>
                 <div class="collapse {% if '/daily-info' in request.path %}show{% endif %}" id="daily-info-collapse">
                   <ul class="nav flex-column btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    {% if request.user.is_authenticated %}
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center gap-2 " aria-current="page" href="{% url 'daily_info_page' %}">
                         <svg class="bi"><use xlink:href="#house-fill"/></svg>
                         Overview
                       </a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center gap-2" href="{% url 'stock_day_info_top_SV_view' %}">
                         <svg class="bi"><use xlink:href="#info-square"/></svg>
                         Top Avg Short Volume 
                       </a>
                     </li>
-                  {% if request.user.is_authenticated %}
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center gap-2" href="{% url 'stock_day_info_reg_show_view' %}">
                         <svg class="bi"><use xlink:href="#info-square"/></svg>
                         Current Reg Sho Lists
                       </a>
                     </li>
+                  {% if request.user.is_authenticated %}
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center gap-2" href="{% url 'stock_day_info_reg_sho_remove_tickers_view' %}">
                         <svg class="bi"><use xlink:href="#info-square"/></svg>
@@ -497,6 +499,7 @@
         
                   {% endif %}
         
+                    {% if request.user.is_authenticated %}
                     <!--
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center gap-2" href="{% url 'stock_day_info_splits_all_tickers' %}">
@@ -557,12 +560,14 @@
                         Bought H
                       </a>
                     </li>
+                    {% endif %}
 
                     <!-- Add more links with similar logic -->
                   </ul>
                 </div>
               </li>
 
+              {% if request.user.is_authenticated %}
               <li class="mb-1">
                 <button
                   class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -634,6 +639,7 @@
                   </ul>
                 </div>
               </li>
+              {% endif %}
 
             </ul>
             

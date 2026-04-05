@@ -484,6 +484,7 @@
                     -->
                     <div class="collapse show" id="home-collapse">
                       <ul class="nav flex-column btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        {% if request.user.is_authenticated %}
                         <li class="nav-item">
                           <a class="nav-link d-flex align-items-center gap-2 {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/">
                             <svg class="bi"><use xlink:href="#house-fill"/></svg>
@@ -496,6 +497,7 @@
                             Charts
                           </a>
                         </li>
+                        {% endif %}
                         <li class="nav-item">
                           <a class="nav-link d-flex align-items-center gap-2  {% if '/daily-info' in request.path %}active{% endif %}" href="{% url 'daily_info_page' %}">
                             <svg class="bi"><use xlink:href="#info-square"/></svg>
@@ -508,6 +510,7 @@
                             Current Reg Sho Lists
                           </a>
                         </li>
+                        {% if request.user.is_authenticated %}
                         <li class="nav-item">
                           <a class="nav-link d-flex align-items-center gap-2" href="{% url 'ticker_splits_view' %}">
                             <svg class="bi"><use xlink:href="#moon-stars-fill"/></svg>
@@ -528,12 +531,14 @@
                             Manage Watch Lists
                           </a>
                         </li>
+                        {% endif %}
 
                         <!-- Add more links with similar logic -->
                       </ul>
                     </div>
                   </li>
                 
+                  {% if request.user.is_authenticated %}
                   <li class="mb-1">
                     <button
                       class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -607,6 +612,7 @@
                       </ul>
                     </div>
                   </li>
+                  {% endif %}
                 
                   {% if request.user.is_superuser %}
                   <li class="mb-1">
